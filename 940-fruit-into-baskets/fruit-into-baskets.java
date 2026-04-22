@@ -1,31 +1,28 @@
 class Solution {
     public int totalFruit(int[] fruits) {
-        int first = -1, second = -1;
-        int lastCount = 0;
-        int curr = 0;
-        int max = 0;
-
-        for (int x : fruits) {
-            if (x == first || x == second) {
-                curr++;
+        HashMap<Integer,Integer> freq=new HashMap<>();
+        int l=0;
+        int r=0;
+        int max=0;
+        int len=0;
+        while(r<fruits.length){
+            if (freq.containsKey(fruits[r])) {
+                freq.put(fruits[r], freq.get(fruits[r]) + 1);
             } else {
-                curr = lastCount + 1;
+                freq.put(fruits[r], 1);
             }
-
-            if (x == second) {
-                lastCount++;
-            } else {
-                lastCount = 1;
+            if(freq.size()>2){
+                freq.put(fruits[l],freq.get(fruits[l])-1);
+                if(freq.get(fruits[l])==0) freq.remove(fruits[l]);
+                l++;      
             }
-
-            if (x != second) {
-                first = second;
-                second = x;
+            else{
+                len=r-l+1;
+                max=Math.max(max,len);
             }
-
-            max = Math.max(max, curr);
+            r++;
         }
-
         return max;
+        
     }
 }
