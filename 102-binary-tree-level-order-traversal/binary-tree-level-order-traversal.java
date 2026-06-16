@@ -27,7 +27,7 @@ class Solution {
         
         while (!q.isEmpty()) {
             
-            int size = q.size();   // nodes in current level
+            int size = q.size();
             List<Integer> level = new ArrayList<>();
             
             for (int i = 0; i < size; i++) {
