@@ -14,18 +14,23 @@
  * }
  */
 class Solution {
-    int sum=0;
-    TreeNode dfs(TreeNode root){
-        if(root==null) return root;
-        dfs(root.right);
-        sum=sum+root.val;
-        root.val=sum;
-        dfs(root.left);
-        return root;
-    }
     public TreeNode convertBST(TreeNode root) {
-        dfs(root);
+        Stack<TreeNode> st=new Stack<>();
+        TreeNode curr=root;
+        int sum=0;
+        while(!st.isEmpty() || curr!=null){
+            if(curr!=null){
+                st.push(curr);
+                curr=curr.right;
+
+            }
+            if(curr==null){
+                curr=st.pop();
+                sum=sum+curr.val;
+                curr.val=sum;
+                curr=curr.left;
+            }
+        }
         return root;
-        
     }
 }
