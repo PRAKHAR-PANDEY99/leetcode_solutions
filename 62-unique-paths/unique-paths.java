@@ -1,28 +1,23 @@
-class Solution {
-    int fn(int m,int n,int[][] dp){
-        if(m==0 && n==0) return 1;
-        if(m<0 || n<0) return 0;
-        int row=m-1;
-        int col=n-1;
-        if(dp[m][n]!=0){
-            return dp[m][n];
-        }
-        int left=fn(m,col,dp);
-        if(m>=0 && col>=0){
-            dp[m][col]=left;
-        }
-        int right=fn(row,n,dp);
-        if(row>=0 && n>=0){
-            dp[row][n]=right;
-        }
-        dp[m][n]=left+right;
-        return dp[m][n];
-    }
-    
+class Solution {    
     public int uniquePaths(int m, int n) {
        int[][] dp=new int[m][n];
-       int ans=fn(m-1,n-1,dp);
-       return ans;
+       dp[0][0]=1;
+       int c=0;
+       for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(i==0 && j==0) continue;
+            int down=0;
+            int right=0;
+            if(i>0){
+                down=dp[i-1][j];
+            }
+            if(j>0){
+                right=dp[i][j-1];
+            }
+            dp[i][j]=right+down;
+            }
+       }
+       return dp[m-1][n-1];
         
     }
 }
