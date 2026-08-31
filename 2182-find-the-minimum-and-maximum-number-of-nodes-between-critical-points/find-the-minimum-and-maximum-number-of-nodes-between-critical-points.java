@@ -28,7 +28,6 @@ class Solution {
             prev=temp;
             temp=temp.next;
         }
-        Collections.sort(list);
         if(list.size()<2){
             return new int[]{-1,-1};
         }
