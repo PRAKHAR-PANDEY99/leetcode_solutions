@@ -1,7 +1,7 @@
 class Solution {
     int sum(String s,String t,int i,int j,int[][] dp){
-        if(i==s.length() || j==t.length()){
-            if(j==t.length()){
+        if(i<0 || j<0){
+            if(j<0){
                 return 1;
             }
             else{
@@ -15,12 +15,12 @@ class Solution {
         int take2=0;
         int nottake=0;
         if(s.charAt(i)==t.charAt(j)){
-            take1=sum(s,t,i+1,j+1,dp);
-            take2=sum(s,t,i+1,j,dp);
+            take1=sum(s,t,i-1,j-1,dp);
+            take2=sum(s,t,i-1,j,dp);
             return  dp[i][j]=take1+take2;
         }
         else{
-            nottake=sum(s,t,i+1,j,dp);
+            nottake=sum(s,t,i-1,j,dp);
             return dp[i][j]=nottake;
         }
     }
@@ -29,7 +29,7 @@ class Solution {
         for(int i=0;i<s.length();i++){
             Arrays.fill(dp[i],-1);
         }
-        int ans=sum(s,t,0,0,dp);
+        int ans=sum(s,t,s.length()-1,t.length()-1,dp);
         return ans;
            
     }
