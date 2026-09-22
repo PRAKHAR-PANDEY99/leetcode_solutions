@@ -1,28 +1,37 @@
 class Solution {
-    int len(int[] nums,int i,int prev,int[][] dp,int prevInd){
-        if(i==nums.length){
-            return 0;
+
+    int binarySearch(int[] dp, int len, int num) {
+        int low = 0;
+        int high = len;
+
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+
+            if (dp[mid] < num) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
         }
-        int take=0;
-        int nottake=0;
-        if(dp[i][prevInd+1]!=-1){
-            return dp[i][prevInd+1];
-        }
-        if(nums[i]>prev){
-            take=Math.max(1+len(nums,i+1,nums[i],dp,i),len(nums,i+1,prev,dp,prevInd));
-        }
-        else{
-            nottake=len(nums,i+1,prev,dp,prevInd);
-        }
-        return dp[i][prevInd+1]=Math.max(take,nottake);
+
+        return low;
     }
+
     public int lengthOfLIS(int[] nums) {
-        int[][] dp=new int[nums.length][nums.length+1];
-        for(int i=0;i<nums.length;i++){
-            Arrays.fill(dp[i],-1);
+        int[] dp = new int[nums.length];
+        int len = 0;
+
+        for (int num : nums) {
+
+            if (len == 0 || num > dp[len - 1]) {
+                dp[len] = num;
+                len++;
+            } else {
+                int index = binarySearch(dp, len, num);
+                dp[index] = num;
+            }
         }
-        int ans=len(nums,0,Integer.MIN_VALUE,dp,-1);
-        return ans;
-        
+
+        return len;
     }
 }
