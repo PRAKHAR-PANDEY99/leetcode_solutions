@@ -1,36 +1,26 @@
 class Solution {
-    int[][] dp;
-
     public int longestStrChain(String[] words) {
         Arrays.sort(words, (a, b) -> a.length() - b.length());
 
-        dp = new int[words.length][words.length + 1];
+        int n = words.length;
+        int[][] dp = new int[n + 1][n + 1];
 
-        for (int[] row : dp) {
-            Arrays.fill(row, -1);
+        for (int i = n - 1; i >= 0; i--) {
+            for (int prev = i - 1; prev >= -1; prev--) {
+
+                int notTake = dp[i + 1][prev + 1];
+
+                int take = 0;
+
+                if (prev == -1 || valid(words[prev], words[i])) {
+                    take = 1 + dp[i + 1][i + 1];
+                }
+
+                dp[i][prev + 1] = Math.max(take, notTake);
+            }
         }
 
-        return solve(0, -1, words);
-    }
-
-    int solve(int i, int prev, String[] words) {
-        if (i == words.length) {
-            return 0;
-        }
-
-        if (dp[i][prev + 1] != -1) {
-            return dp[i][prev + 1];
-        }
-
-        int notTake = solve(i + 1, prev, words);
-
-        int take = 0;
-
-        if (prev == -1 || valid(words[prev], words[i])) {
-            take = 1 + solve(i + 1, i, words);
-        }
-
-        return dp[i][prev + 1] = Math.max(take, notTake);
+        return dp[0][0];
     }
 
     boolean valid(String s, String t) {
