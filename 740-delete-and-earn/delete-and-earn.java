@@ -1,18 +1,34 @@
 class Solution {
-    public int deleteAndEarn(int[] nums) {
-        HashMap<Integer,Integer> map=new HashMap<>();
-        int max=0;
+    int fn(int i,int[] points,int[] dp){
+        if(i>=points.length){
+            return 0;
+        }
 
+        if(dp[i]!=-1){
+            return dp[i];
+        }
+
+        int take=points[i]+fn(i+2,points,dp);
+        int nottake=fn(i+1,points,dp);
+
+        return dp[i]=Math.max(take,nottake);
+    }
+
+    public int deleteAndEarn(int[] nums){
+        int max=0;
         for(int n:nums){
-            map.put(n,map.getOrDefault(n,0)+n);
             max=Math.max(max,n);
         }
-        int[] dp=new int[max+1];
-        dp[1]=map.getOrDefault(1,0);
-        for(int i=2;i<=max;i++){
-            dp[i]=Math.max(dp[i-1],dp[i-2]+map.getOrDefault(i,0));
+
+        int[] points=new int[max+1];
+
+        for(int n:nums){
+            points[n]+=n;
         }
 
-        return dp[max];
+        int[] dp=new int[max+1];
+        Arrays.fill(dp,-1);
+
+        return fn(1,points,dp);
     }
 }
