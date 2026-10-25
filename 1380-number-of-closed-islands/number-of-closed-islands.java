@@ -17,11 +17,8 @@ class Solution {
         int area = 0;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-
                 if (grid[i][j] == 0 && vis[i][j] == 0) {
-
                     boolean closed = true;
-
                     q.add(new Pair(i, j));
                     vis[i][j] = 1;
                     while (!q.isEmpty()) {
