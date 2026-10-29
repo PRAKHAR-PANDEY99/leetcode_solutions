@@ -18,14 +18,14 @@ class Solution {
         int max=0;
         for(int move1=-1;move1<=1;move1++){
             for(int move2=-1;move2<=1;move2++){
-            int newRow=r1+1;
-            int newCol1=c1+move1;
-            int newCol2=c2+move2;
+            int r11=r1+1;
+            int c11=c1+move1;
+            int c22=c2+move2;
             if(c1==c2){
-                a=grid[r1][c1]+fn(r1+1,newCol1,r2+1,newCol2,grid,dp);
+                a=grid[r1][c1]+fn(r1+1,c11,r2+1,c22,grid,dp);
             }
             else{
-                a=grid[r1][c1]+grid[r2][c2]+fn(r1+1,newCol1,r2+1,newCol2,grid,dp);
+                a=grid[r1][c1]+grid[r2][c2]+fn(r1+1,c11,r2+1,c22,grid,dp);
             }
             max=Math.max(a,max);
             }
@@ -43,6 +43,7 @@ for(int i=0;i<grid.length;i++){
         }
     }
 }
+//Questio Checl
         
         int ans=fn(0,0,0,grid[0].length-1,grid,dp);
         return ans;
