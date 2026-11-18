@@ -2,47 +2,40 @@ class Solution {
     class Pair{
         int node;
         int dist;
+
         Pair(int node,int dist){
             this.node=node;
             this.dist=dist;
         }
     }
-    public int networkDelayTime(int[][] times, int n, int k) {
+
+    void dfs(int i,int d,List<List<Pair>> adj,int[] dist){
+        if(d>=dist[i]) return;
+
+        dist[i]=d;
+
+        for(Pair p:adj.get(i)){
+            dfs(p.node,d+p.dist,adj,dist);
+        }
+    }
+
+    public int networkDelayTime(int[][] times,int n,int k) {
         List<List<Pair>> adj=new ArrayList<>();
         for(int i=0;i<=n;i++){
             adj.add(new ArrayList<>());
         }
-        for(int i=0;i<times.length;i++){
-            int first=times[i][0];
-            int second=times[i][1];
-            int dis=times[i][2];
-            adj.get(first).add(new Pair(second,dis));
+        for(int[] t:times){
+            adj.get(t[0]).add(new Pair(t[1],t[2]));
         }
-        PriorityQueue<Pair> q=new PriorityQueue<>((a,b)->a.dist-b.dist);
         int[] dist=new int[n+1];
         Arrays.fill(dist,Integer.MAX_VALUE);
-        dist[k]=0;
-        q.offer(new Pair(k,0));
-        while(!q.isEmpty()){
-            Pair pp=q.poll();
-            int node=pp.node;
-            int distance=pp.dist;
-            for(Pair it: adj.get(node)){
-                if(dist[it.node]>distance+it.dist){
-                    dist[it.node]=distance+it.dist;
-                    q.offer(new Pair(it.node,distance+it.dist));
-                }
-            }
-        }
-        int max=-1;
+        dfs(k,0,adj,dist);
+        int ans=0;
         for(int i=1;i<=n;i++){
-            if(max<dist[i]){
-                max=dist[i];
-            }
-
+            if(dist[i]==Integer.MAX_VALUE) return -1;
+            ans=Math.max(ans,dist[i]);
         }
-        if(max==Integer.MAX_VALUE) return -1;
-        return max;
-        
+
+        return ans;
     }
 }
